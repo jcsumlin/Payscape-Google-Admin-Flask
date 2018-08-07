@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Google Account Creation | Payscape</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:300" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <style>
+        .bg-1 {
+            background-color: #DD5F29; /* Green */
+            color: #ffffff;
+        }
+        .logo {
+            width: 150px;
+        }
+        h2 {
+            font-family: 'Lato', sans-serif;
+        }
+        .terminal {
+            background-color: #5B6764;
+            padding-bottom: 25px;
+            padding-top: 25px;
+            padding-left: 15px;
+            padding-right: 15px;
+            color: #00CFC7;
+        }
+
+        .blinking-cursor {
+          font-weight: 100;
+          color: #2E3D48;
+          -webkit-animation: 1s blink step-end infinite;
+          -moz-animation: 1s blink step-end infinite;
+          -ms-animation: 1s blink step-end infinite;
+          -o-animation: 1s blink step-end infinite;
+          animation: 1s blink step-end infinite;
+        }
+
+        @keyframes "blink" {
+          from, to {
+            color: transparent;
+          }
+          50% {
+            color: #00CFC7;
+          }
+        }
+
+        @-moz-keyframes blink {
+          from, to {
+            color: transparent;
+          }
+          50% {
+            color: #00CFC7;
+          }
+        }
+
+        @-webkit-keyframes "blink" {
+          from, to {
+            color: transparent;
+          }
+          50% {
+            color: #00CFC7;
+          }
+        }
+
+        @-ms-keyframes "blink" {
+          from, to {
+            color: transparent;
+          }
+          50% {
+            color: #00CFC7;
+          }
+        }
+
+        @-o-keyframes "blink" {
+          from, to {
+            color: transparent;
+          }
+          50% {
+            color: #00CFC7;
+          }
+        }
+            /* Sticky footer styles -------------------------------------------------- */
+        html {
+          position: relative;
+          min-height: 100%;
+        }
+        body {
+          margin-bottom: 60px; /* Margin bottom by footer height */
+        }
+        .footer {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          height: 60px; /* Set the fixed height of the footer here */
+          line-height: 60px; /* Vertically center the text there */
+          background-color: #f5f5f5;
+        }
+
+
+        /* Custom page CSS
+        -------------------------------------------------- */
+        /* Not required for template or sticky footer method. */
+
+        .container {
+          width: auto;
+          max-width: 800px;
+          padding: 0 15px;
+        }
+    </style>
+
+</head>
+<body>
+<div class="jumbotron text-center bg-1">
+    <img src="https://payscape.com/wp-content/uploads/payscape-logo-white.svg" class="logo">
+    <h2>Gmail Account Creation Automation</h2>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="terminal">
+                <h3>Output:</h3>
+                {% if output %}
+                <p>
+                    {{ output }}
+                </p>
+                {% else %}
+                    <span class="blinking-cursor">|</span>
+                {% endif %}
+                
+            </div>
+            <br>
+            <div class="btn-group">
+                <form action="/output" method="post">
+                    {% if reset %}
+                    <button class="btn btn-success disabled" name="runBtn" type="submit">Run</button>
+                    {% else %}
+                    <button class="btn btn-success" name="runBtn" type="submit">Run</button>
+                    {% endif %}
+                </form>
+                {% if reset %}
+                    <a href="/"><button class="btn btn-info">Reset</button></a>
+                {% endif %}
+            </div>
+            <h2>Important Info</h2>
+            {% if sandbox == False %}
+                <div class="alert alert-danger">
+                    <strong>Caution!</strong> The script is in <strong>Live</strong> mode. Changes will be made to the Live Salesfoce account.
+                </div>
+            {% elif sandbox %}
+                <div class="alert alert-warn">
+                    <strong>Warning!</strong> The script is in <strong>Sandbox</strong> mode. Changes will be made to the Sandbox Salesfoce account.
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <strong>Info!</strong> The script does not appear to have an environment set. Please check the auth.ini file or contact Chat
+                </div>
+            {% endif %}
+            <ul>
+                <li>User must have been created using the "Create Salesforce User" Flow <a href="">HERE</a></li>
+                <li>This script looks for Salesforce users where the variable "New" is set to TRUE (checked).</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<footer class="footer">
+      <div class="container">
+        <span class="text-muted">Written by <a href="http://www.chatsumlin.com">Chat Sumlin</a></span><img src="github.svg">
+      </div>
+    </footer>
+<p></p>
+</body>
+</html>
