@@ -15,7 +15,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <style>
         .bg-1 {
-            background-color: #DD5F29; /* Green */
+            background-color: #DD5F29;
             color: #ffffff;
         }
         .logo {
@@ -32,78 +32,11 @@
             padding-right: 15px;
             color: #00CFC7;
         }
-
-        .blinking-cursor {
-          font-weight: 100;
-          color: #2E3D48;
-          -webkit-animation: 1s blink step-end infinite;
-          -moz-animation: 1s blink step-end infinite;
-          -ms-animation: 1s blink step-end infinite;
-          -o-animation: 1s blink step-end infinite;
-          animation: 1s blink step-end infinite;
-        }
-
-        @keyframes "blink" {
-          from, to {
-            color: transparent;
-          }
-          50% {
+        .term-color {
+            background-color: #5B6764;
             color: #00CFC7;
-          }
+            border: #5B6764;
         }
-
-        @-moz-keyframes blink {
-          from, to {
-            color: transparent;
-          }
-          50% {
-            color: #00CFC7;
-          }
-        }
-
-        @-webkit-keyframes "blink" {
-          from, to {
-            color: transparent;
-          }
-          50% {
-            color: #00CFC7;
-          }
-        }
-
-        @-ms-keyframes "blink" {
-          from, to {
-            color: transparent;
-          }
-          50% {
-            color: #00CFC7;
-          }
-        }
-
-        @-o-keyframes "blink" {
-          from, to {
-            color: transparent;
-          }
-          50% {
-            color: #00CFC7;
-          }
-        }
-            /* Sticky footer styles -------------------------------------------------- */
-        html {
-          position: relative;
-          min-height: 100%;
-        }
-        body {
-          margin-bottom: 60px; /* Margin bottom by footer height */
-        }
-        .footer {
-          position: absolute;
-          bottom: 0;
-          width: 100%;
-          height: 60px; /* Set the fixed height of the footer here */
-          line-height: 60px; /* Vertically center the text there */
-          background-color: #f5f5f5;
-        }
-
 
         /* Custom page CSS
         -------------------------------------------------- */
@@ -128,38 +61,52 @@
             <div class="terminal">
                 <h3>Output:</h3>
                 {% if output %}
-                <p>
-                    {{ output }}
-                </p>
+                <p>{{ output }}</p>
                 {% else %}
-                    <span class="blinking-cursor">|</span>
                 {% endif %}
                 
             </div>
             <br>
-            <div class="btn-group">
-                <form action="/output" method="post">
+            <h2>Need to reauthorize?</h2>
+            <form action="/output" method="post">
+                <div class="form-group">
+                    <label class="" for="usr">Google Auth Code:</label>
+                    <input type="text" class="form-control" name="auth" autofocus>
                     {% if reset %}
-                    <button class="btn btn-success disabled" name="runBtn" type="submit">Run</button>
                     {% else %}
-                    <button class="btn btn-success" name="runBtn" type="submit">Run</button>
+                        <button class="btn btn-success" name="runBtn" type="submit">Run</button>
                     {% endif %}
-                </form>
-                {% if reset %}
-                    <a href="/"><button class="btn btn-info">Reset</button></a>
-                {% endif %}
+                </div>
+            </form>
+            {% if reset %}
+                <a href="/"><button class="btn btn-info">Reset</button></a>
+            {% endif %}
+            <a href="/auth"><button class="btn btn-link">Get Token</button></a>
+            <div class="btn-group">
+{#                <form action="/output" method="post">#}
+{#                    {% if reset %}#}
+{#                    <button class="btn btn-success disabled" name="runBtn" type="submit">Run</button>#}
+{#                    {% else %}#}
+{#                    <button class="btn btn-success" name="runBtn" type="submit">Run with Stored Token</button>#}
+{#                    {% endif %}#}
+{#                </form>#}
+{#                {% if reset %}#}
+{#                    <a href="/"><button class="btn btn-info">Reset</button></a>#}
+{#                {% endif %}#}
+
             </div>
+
             <h2>Important Info</h2>
             {% if sandbox == False %}
-                <div class="alert alert-danger">
+                <div class="alert alert-success">
                     <strong>Caution!</strong> The script is in <strong>Live</strong> mode. Changes will be made to the Live Salesfoce account.
                 </div>
             {% elif sandbox %}
-                <div class="alert alert-warn">
+                <div class="alert alert-warning">
                     <strong>Warning!</strong> The script is in <strong>Sandbox</strong> mode. Changes will be made to the Sandbox Salesfoce account.
                 </div>
             {% else %}
-                <div class="alert alert-info">
+                <div class="alert alert-danger">
                     <strong>Info!</strong> The script does not appear to have an environment set. Please check the auth.ini file or contact Chat
                 </div>
             {% endif %}
@@ -172,7 +119,7 @@
 </div>
 <footer class="footer">
       <div class="container">
-        <span class="text-muted">Written by <a href="http://www.chatsumlin.com">Chat Sumlin</a></span><img src="github.svg">
+        <span class="text-muted">Written by <a href="http://www.chatsumlin.com">Chat Sumlin</a></span><img src="/github.svg.png" style="width: 25px;">
       </div>
     </footer>
 <p></p>

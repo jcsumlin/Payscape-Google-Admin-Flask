@@ -10,7 +10,7 @@ import configparser
 
 config = configparser.ConfigParser()
 config.read('auth.ini')
-SANDBOX = False
+SANDBOX = True
 
 
 class gmail_admin:
@@ -41,7 +41,8 @@ class gmail_admin:
 
 
 
-    def create_email(self, SF_Results):
+    def create_email(self, SF_Results, auth_code=None):
+        self.auth_code = auth_code
         for user in SF_Results:
             if user['Phone'] is not None:
                 phone_number = str(user['Phone'])
@@ -77,9 +78,8 @@ class gmail_admin:
             try:
                 self.google_api_create_user(self.check_stored_token(), self.data)
                 print("Stored Token still valid")
-
             except:
-                self.google_api_create_user(self.google_api_authorize(), self.data)
+                self.google_api_create_user(self.google_api_authorize(self.auth_code), self.data)
             print("User \"%s\" has been created Google Admin!"  % user['Name'])
             print("Attempting to add user to all group and %s group" % user['Payscape_Offices__c'])
             self.google_api_update_group(self.check_stored_token(), user)
@@ -102,23 +102,36 @@ class gmail_admin:
         service = build('admin', 'directory_v1', http=http)
         return service
 
-    def google_api_authorize(self):
+
+    def open_auth(self):
+        flow = flow_from_clientsecrets('client_secret.json',
+                                       scope=['https://www.googleapis.com/auth/admin.directory.user',
+                                              'https://www.googleapis.com/auth/admin.directory.group'],
+                                       redirect_uri='urn:ietf:wg:oauth:2.0:oob')
+        auth_uri = flow.step1_get_authorize_url()
+        webbrowser.open(auth_uri)
+        return auth_uri
+
+
+    def google_api_authorize(self, auth_code=None):
         flow = flow_from_clientsecrets('client_secret.json',
                                    scope=['https://www.googleapis.com/auth/admin.directory.user',
                                           'https://www.googleapis.com/auth/admin.directory.group'],
                                    redirect_uri='urn:ietf:wg:oauth:2.0:oob')
-
         auth_uri = flow.step1_get_authorize_url()
-        webbrowser.open(auth_uri)
-        auth_code = input("\nAuthorization Code >>> ") #
+
+        print(auth_uri)
+        if auth_code is None:
+            return "Auth code is not set. Please check info."
         credentials = flow.step2_exchange(auth_code)
         storage = Storage('token.json')
         http = httplib2.Http()
         http = credentials.authorize(http)
         service = build('admin', 'directory_v1', http=http)
-
         storage.put(credentials)
         return service
+
+
     def google_api_create_user(self, service, data):
         # Call the Admin SDK Directory API
         results = service.users().insert(body=data).execute()
