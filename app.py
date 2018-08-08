@@ -38,6 +38,5 @@ def output():
         print(e)
         return render_template('index.html', sandbox=sandbox, output=e, reset=True)
 
-
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
